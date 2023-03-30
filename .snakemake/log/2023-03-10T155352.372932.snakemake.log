@@ -1,0 +1,13 @@
+Full Traceback (most recent call last):
+  File "/opt/homebrew/Caskroom/miniforge/base/envs/snakemake/lib/python3.11/site-packages/snakemake/__init__.py", line 646, in snakemake
+    workflow.include(
+  File "/opt/homebrew/Caskroom/miniforge/base/envs/snakemake/lib/python3.11/site-packages/snakemake/workflow.py", line 1231, in include
+    exec(compile(code, snakefile.get_path_or_uri(), "exec"), self.globals)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kay/Programming/Project/Snakefile", line 15
+    	bash scripts / unpack_main . sh
+    	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+
+SyntaxError in file /Users/kay/Programming/Project/Snakefile, line 8:
+invalid syntax. Perhaps you forgot a comma?

@@ -1,0 +1,11 @@
+Full Traceback (most recent call last):
+  File "/opt/homebrew/Caskroom/miniforge/base/envs/snakemake/lib/python3.11/site-packages/snakemake/__init__.py", line 646, in snakemake
+    workflow.include(
+  File "/opt/homebrew/Caskroom/miniforge/base/envs/snakemake/lib/python3.11/site-packages/snakemake/workflow.py", line 1231, in include
+    exec(compile(code, snakefile.get_path_or_uri(), "exec"), self.globals)
+  File "/Users/kay/Programming/Project/Snakefile", line 14, in <module>
+TypeError: Workflow.script() takes 2 positional arguments but 3 were given
+
+TypeError in file /Users/kay/Programming/Project/Snakefile, line 7:
+Workflow.script() takes 2 positional arguments but 3 were given
+  File "/Users/kay/Programming/Project/Snakefile", line 7, in <module>

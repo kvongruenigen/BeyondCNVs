@@ -1,0 +1,2 @@
+SyntaxError in file /Users/kay/Programming/Project/Snakefile, line 5:
+Multiple run or shell keywords in rule maf_retrieval_gdc. (Snakefile, line 5)
