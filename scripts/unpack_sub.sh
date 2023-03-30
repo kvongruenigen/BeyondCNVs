@@ -1,15 +1,12 @@
 # Find all directories in the current directory
-cd data
+cd temp
 
 for dir in */; do
-    echo "Processing directory: $dir"
-
     # Go into the directory
     cd "$dir"
 
     # Look for tar.gz files and extract them
     for file in *.maf.gz; do
-        echo "Extracting file: $file"
         gunzip "$file"
     
     done
@@ -30,3 +27,5 @@ for dir in */; do
 
     rmdir "$dir"
 done
+
+mv * ../data

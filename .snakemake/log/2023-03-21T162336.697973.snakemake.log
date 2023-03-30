@@ -1,0 +1,28 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job           count    min threads    max threads
+----------  -------  -------------  -------------
+unpack_all        1              1              1
+total             1              1              1
+
+Select jobs to execute...
+
+[Tue Mar 21 16:23:37 2023]
+rule unpack_all:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/n3/gb4qgnr95d9bk6_y9qtj6p980000gq/T
+
+[Tue Mar 21 16:23:37 2023]
+Error in rule unpack_all:
+    jobid: 0
+    shell:
+        bash scripts/unpack_main.sh && bash scripts/unpack_sub.sh | cd temp | mv * ../data
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-03-21T162336.697973.snakemake.log

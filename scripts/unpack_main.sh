@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Enter data directory
-cd data
+cd temp
 
 # Look for nested tar.gz files and extract them
 find . -name '*.tar.gz' -exec tar -xzf {} \;

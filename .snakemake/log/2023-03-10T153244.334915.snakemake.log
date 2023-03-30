@@ -1,3 +1,0 @@
-TypeError in file /Users/kay/Programming/Project/Snakefile, line 7:
-Workflow.script() takes 2 positional arguments but 3 were given
-  File "/Users/kay/Programming/Project/Snakefile", line 7, in <module>

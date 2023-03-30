@@ -77,7 +77,7 @@ response_head_cd = response.headers["Content-Disposition"]
 
 file_name = re.findall("filename=(.+)", response_head_cd)[0]
 
-save_path = 'data/'
+save_path = 'temp/'
 
 completeName = os.path.join(save_path, file_name)
 
