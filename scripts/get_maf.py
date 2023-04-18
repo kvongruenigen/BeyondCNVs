@@ -45,7 +45,7 @@ params = {
     "filters": filters,
     "fields": fields,
     "format": "TSV",
-    "size": "20"
+    "size": "500"
     }
 # The parameters are passed to 'json' rather than 'params' in this case
 response = requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)

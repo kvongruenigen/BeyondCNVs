@@ -7,3 +7,8 @@ rule maf_download:
 rule unpack_all:
 	shell:
 		"bash scripts/unpack_main.sh && bash scripts/unpack_sub.sh"
+
+
+rule intfile:
+	script:
+		"scripts/Mapping_file_creator.py"
