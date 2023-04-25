@@ -1,0 +1,25 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count    min threads    max threads
+-----------------  -------  -------------  -------------
+intermediate_file        1              1              1
+total                    1              1              1
+
+Select jobs to execute...
+
+[Wed Apr 12 17:08:33 2023]
+rule intermediate_file:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/t_/62401zpn7dj6xlnzf_bjdsb00000gn/T
+
+[Wed Apr 12 17:08:33 2023]
+Error in rule intermediate_file:
+    jobid: 0
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-04-12T170833.105960.snakemake.log

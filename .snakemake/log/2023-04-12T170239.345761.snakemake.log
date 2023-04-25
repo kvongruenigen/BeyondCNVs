@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count    min threads    max threads
+-----------------  -------  -------------  -------------
+intermediate_file        1              1              1
+total                    1              1              1
+
+Select jobs to execute...
+
+[Wed Apr 12 17:02:41 2023]
+rule intermediate_file:
+    output: intermediate_mapping_file.csv
+    jobid: 0
+    reason: Missing output files: intermediate_mapping_file.csv
+    resources: tmpdir=/var/folders/t_/62401zpn7dj6xlnzf_bjdsb00000gn/T
+
+[Wed Apr 12 17:02:41 2023]
+Error in rule intermediate_file:
+    jobid: 0
+    output: intermediate_mapping_file.csv
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-04-12T170239.345761.snakemake.log
