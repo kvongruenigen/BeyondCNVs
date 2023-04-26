@@ -5,6 +5,7 @@ import requests
 import json
 import re
 import pandas as pd
+import re
 
 fields = [
     "file_name",
@@ -42,30 +43,29 @@ filters = {
 
 # A POST is used, so the filter parameters can be passed directly as a Dict object.
 params = {
-    "filters": filters,
+    "filters": json.dumps(filters),
     "fields": fields,
     "format": "TSV",
-    "size": "500"
+    "size": "10"
     }
 # The parameters are passed to 'json' rather than 'params' in this case
 response = requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)
 
-# Write .txt file to read ids
-with open("ids_to_get.txt", "wb") as output_file:
-    output_file.write(response.content)
+data = response.content.decode('utf-8')
+split_string = re.split(r'[\t\r\n]', data)
 
-df = pd.read_csv("ids_to_get.txt",sep='\t')
-ids_to_get = []
+# Convert list to DataFrame
+df = pd.DataFrame([split_string[i:i+8] for i in range(0, len(split_string)-1, 8)], columns=split_string[:8])
+df = df.drop(df.columns[-1], axis=1)
 
-for lines in df["id"]:
-    ids_to_get += [lines]
-
+# Display DataFrame
+file_uuid_list = list(df["id"][1:])
 
 # Post Request to Download Multiple Files ####################################
 
 data_endpt = "https://api.gdc.cancer.gov/data"
 
-params = {"ids": ids_to_get}
+params = {"ids": file_uuid_list}
 
 response = requests.post(data_endpt,
                         data = json.dumps(params),
@@ -84,8 +84,3 @@ completeName = os.path.join(save_path, file_name)
 
 with open(completeName, "wb") as output_file:
     output_file.write(response.content)
-
-
-# Remove generated .txt for clean space ######################################
-
-os.remove("ids_to_get.txt")
