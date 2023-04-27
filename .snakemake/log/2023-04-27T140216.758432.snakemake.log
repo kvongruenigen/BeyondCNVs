@@ -1,0 +1,25 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job        count    min threads    max threads
+-------  -------  -------------  -------------
+intfile        1              1              1
+total          1              1              1
+
+Select jobs to execute...
+
+[Thu Apr 27 14:02:18 2023]
+rule intfile:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/n3/gb4qgnr95d9bk6_y9qtj6p980000gq/T
+
+[Thu Apr 27 14:02:18 2023]
+Error in rule intfile:
+    jobid: 0
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-04-27T140216.758432.snakemake.log
