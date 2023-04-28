@@ -81,6 +81,6 @@ save_path = 'temp/'
 
 completeName = os.path.join(save_path, file_name)
 
-
-with open(completeName, "wb") as output_file:
-    output_file.write(response.content)
+df
+# with open(completeName, "wb") as output_file:
+#     output_file.write(response.content)
