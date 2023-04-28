@@ -1,0 +1,4 @@
+cd temp
+
+mv * ../data
+
