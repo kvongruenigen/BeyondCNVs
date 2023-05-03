@@ -1,21 +1,7 @@
-# Filtering ##################################################################
-
-import os
 import requests
 import json
 import re
-import pandas as pd
-import re
-
-fields = [
-    "file_name",
-    "cases.submitter_id",
-    "cases.samples.sample_type",
-    "cases.disease_type",
-    "cases.project.project_id"
-    ]
-
-fields = ",".join(fields)
+import os
 
 files_endpt = "https://api.gdc.cancer.gov/files"
 
@@ -23,64 +9,58 @@ files_endpt = "https://api.gdc.cancer.gov/files"
 # Filtering for TCGA Masked Somatic Mutation - results in open access maf files.
 filters = {
     "op": "and",
-    "content":[
+    "content": [
         {
-        "op": "in",
-        "content":{
-            "field": "cases.project.program.name",
-            "value": ["TCGA"]
+            "op": "in",
+            "content": {
+                "field": "cases.project.program.name",
+                "value": ["TCGA"]
             }
         },
-                    {
-        "op": "in",
-        "content":{
-            "field": "files.data_type",
-            "value": ["Masked Somatic Mutation"]
+        {
+            "op": "in",
+            "content": {
+                "field": "files.data_type",
+                "value": ["Masked Somatic Mutation"]
             }
         }
     ]
 }
+# Here a GET is used, so the filter parameters should be passed as a JSON string.
 
-# A POST is used, so the filter parameters can be passed directly as a Dict object.
 params = {
     "filters": json.dumps(filters),
-    "fields": fields,
-    "format": "TSV",
-    "size": "10"
-    }
-# The parameters are passed to 'json' rather than 'params' in this case
-response = requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)
+    "fields": "file_id",
+    "format": "JSON",
+    "size": "20000"
+}
 
-data = response.content.decode('utf-8')
-split_string = re.split(r'[\t\r\n]', data)
+response = requests.get(files_endpt, params=params)
 
-# Convert list to DataFrame
-df = pd.DataFrame([split_string[i:i+8] for i in range(0, len(split_string)-1, 8)], columns=split_string[:8])
-df = df.drop(df.columns[-1], axis=1)
+file_uuid_list = []
 
-# Display DataFrame
-file_uuid_list = list(df["id"][1:])
+# This step populates the download list with the file_ids from the previous query
+for file_entry in json.loads(response.content.decode("utf-8"))["data"]["hits"]:
+    file_uuid_list.append(file_entry["file_id"])
 
-# Post Request to Download Multiple Files ####################################
+ls = []
+for i in range(0, len(file_uuid_list), 1000):
+    ls.append(file_uuid_list[i:i + 1000])
 
-data_endpt = "https://api.gdc.cancer.gov/data"
+for idls in ls:
+    data_endpt = "https://api.gdc.cancer.gov/data"
 
-params = {"ids": file_uuid_list}
+    params = {"ids": idls}
 
-response = requests.post(data_endpt,
-                        data = json.dumps(params),
-                        headers={
-                            "Content-Type": "application/json"
-                            })
+    response = requests.post(data_endpt, data=json.dumps(params), headers={"Content-Type": "application/json"})
 
-response_head_cd = response.headers["Content-Disposition"]
+    response_head_cd = response.headers["Content-Disposition"]
 
-file_name = re.findall("filename=(.+)", response_head_cd)[0]
+    file_name = re.findall("filename=(.+)", response_head_cd)[0]
 
-save_path = 'temp/'
+    save_path = '../temp/'
 
-completeName = os.path.join(save_path, file_name)
+    completeName = os.path.join(save_path, file_name)
 
-
-with open(completeName, "wb") as output_file:
-    output_file.write(response.content)
+    with open(completeName, "wb") as output_file:
+        output_file.write(response.content)
