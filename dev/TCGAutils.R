@@ -3,15 +3,6 @@
 #               trim_ws = TRUE, skip = 7)
 
 ################################################################################
-test_set <- unique_aliquots[1:10]
-test_df <- df[1:100,]
-
-################################################################################
-# select only the UUID and sample_id columns
-
-
-
-################################################################################
 # Clean write
 rm(list = ls())
 library(readr)
@@ -19,18 +10,17 @@ library(dplyr)
 library(TCGAutils)
 
 df <- read_csv("temp/intermediate_mapping_file.csv")
-
-unique_aliquots <- unique(df$Tumor_Sample_UUID)
-barcodes <- list()
+sample_barcodes <- unique(df['Tumor_Sample_Barcode'])
 sample_ids <- list()
-for (id in unique_aliquots){
-  bar <- UUIDtoBarcode(id, from_type = "aliquot_ids")
-  bar <- substr(bar$portions.analytes.aliquots.submitter_id, 1, 16)
-  sam <- barcodeToUUID(bar)
+
+start_time <- Sys.time()
+for (id in sample_barcodes){
+  sam <- barcodeToUUID(id)
   sam <- sam$sample_ids
   sample_ids <- c(sample_ids, sam)
-  barcodes <- c(barcodes, bar)
 }
+end_time <- Sys.time()
+end_time - start_time
 
 conversion_df <- data.frame(unlist(as.list(unique_aliquots)), unlist(sample_ids))
 colnames(conversion_df) <- c('aliquot_ids', 'sample_ids')
@@ -38,11 +28,11 @@ colnames(conversion_df) <- c('aliquot_ids', 'sample_ids')
 mapfile <- left_join(df, conversion_df, by = c("Tumor_Sample_UUID" = "aliquot_ids"))
 colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id", "NCBI_Build",
                        "chromosome", "start", "end", "strand", "variant_classification",
-                       "variant_type", "ref_allele", "tumor_allele1", "tumor_allele2",
-                       "hgvsc", "hgvsp", "hgvsp_short", "sample_id")
-mapfile <- mapfile %>% select(case_id, sample_id, aliquot_id, reference_id,
+                       "variant_type", "reference_bases", "alternate_bases_1", "alternate_bases_2",
+                       "hgvsc", "hgvsp", "hgvsp_short", "biosample_id")
+mapfile <- mapfile %>% select(case_id, biosample_id, aliquot_id, reference_id,
                               chromosome, start, end, strand, variant_classification,
-                              variant_type, ref_allele, tumor_allele1, tumor_allele2,
+                              variant_type, reference_bases, alternate_bases_1, alternate_bases_2,
                               hgvsc, hgvsp, hgvsp_short)
-write_tsv(mapfile, 'temp/mappingfile.txt')
+write_tsv(mapfile, 'temp/mappingfile.tsv')
 

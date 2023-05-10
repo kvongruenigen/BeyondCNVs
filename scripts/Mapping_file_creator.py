@@ -17,7 +17,7 @@ import os
 relevant = ['Tumor_Sample_UUID','Matched_Norm_Sample_UUID','case_id', 'NCBI_Build','Chromosome',
           'Start_Position','End_Position','Strand', 'Variant_Classification', 'Variant_Type',
           'Reference_Allele', 'Tumor_Seq_Allele1', 'Tumor_Seq_Allele2', 'HGVSc', 'HGVSp',
-          'HGVSp_Short'] # combined identifiers and variant information
+          'HGVSp_Short', 'Tumor_Sample_Barcode'] # combined identifiers and variant information
 
 imf = pd.DataFrame() # Create empty dataframe for intermediate file
 
@@ -31,6 +31,7 @@ for file in os.listdir("data/"): # Iterate through directory
         imf = pd.concat([imf, df]) # write the relevant information to imf
 
 imf = imf.reset_index(drop=True) # Remove indexing column
+imf['Tumor_Sample_Barcode'] = imf['Tumor_Sample_Barcode'].str.slice(stop=16) # Only keep the first 16 characters = sample barcode (instead of aliquot)
 os.makedirs('temp/', exist_ok=True) # Check for the directory
 imf.to_csv('temp/intermediate_mapping_file.csv', index = False)  # and create .csv file in the directory
 
