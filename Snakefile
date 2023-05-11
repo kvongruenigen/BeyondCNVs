@@ -11,4 +11,25 @@ rule unpack_all:
 
 rule intfile:
 	script:
-		"scripts/Mapping_file_creator.py"
+		"scripts/intermediate_mapping.py"
+
+
+rule mapfile:
+	script:
+		"scripts/aliquot_to_sample.R"
+
+
+rule mapping:
+	script:
+		"scripts/mapping_finish.py"
+
+rule clean_up:
+    input:
+        "temp/intermediate_mapping_file.csv",
+        "temp/mapfile.tsv"
+    shell:
+        "rm temp/intermediate_mapping_file.csv temp/mapfile.tsv"
+
+rule all:
+	input:
+		"temp/mappingfile.tsv"
