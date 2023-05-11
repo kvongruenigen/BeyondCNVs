@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+maf_download        1              1              1
+total               1              1              1
+
+Select jobs to execute...
+
+[Thu May 11 13:56:44 2023]
+rule maf_download:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/n3/gb4qgnr95d9bk6_y9qtj6p980000gq/T
+
+Terminating processes on user request, this might take some time.
+[Thu May 11 13:56:46 2023]
+Error in rule maf_download:
+    jobid: 0
+
+Complete log: .snakemake/log/2023-05-11T135643.074833.snakemake.log

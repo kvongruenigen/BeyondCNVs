@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job        count    min threads    max threads
+-------  -------  -------------  -------------
+mapping        1              1              1
+total          1              1              1
+
+Select jobs to execute...
+
+[Thu May 11 14:53:47 2023]
+rule mapping:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/n3/gb4qgnr95d9bk6_y9qtj6p980000gq/T
+
+Terminating processes on user request, this might take some time.
+[Thu May 11 14:53:52 2023]
+Error in rule mapping:
+    jobid: 0
+
+Complete log: .snakemake/log/2023-05-11T145346.482246.snakemake.log

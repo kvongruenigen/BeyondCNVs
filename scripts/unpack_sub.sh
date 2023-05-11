@@ -1,6 +1,7 @@
-# Find all directories in the current directory
+
 cd temp
 
+# Find all directories in the current directory
 for dir in */; do
     # Go into the directory
     cd "$dir"
