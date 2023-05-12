@@ -22,7 +22,7 @@ rule mapfile: # 1 min
 # Match the sample ids to the database to retrieve biosample_id
 # Remove the alternate bases that matches the references bases
 # Create callset and variant ids
-rule mapping:
+rule mapping: # 3h 5 min
 	script:
 		"scripts/mapping_finish.py"
 

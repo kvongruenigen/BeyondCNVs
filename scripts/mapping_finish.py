@@ -20,30 +20,25 @@ df = pd.read_csv("temp/mapfile.tsv", sep='\t', header=0, low_memory = False)
 df['case_id'] = 'pgx:TCGA-' + df['case_id']
 df['sample_id'] = 'pgx:TCGA-' + df['sample_id']
 
+# Create placeholder for variant id, gets created while import
+df['variant_id'] = ['pgxvar-'] * len(df)
 
-# Generate callset_ids per aliquot for import
-callset_ids = []
+# Generate callset_ids per aliquot for import and map sample_id to biosample_id
+biosample_mapping = {}
 for aliquot in set(df['aliquot_id']):
     cs_id = generate_id('pgxcs')
     df.loc[df['aliquot_id'] == aliquot, 'callset_id'] = cs_id
 
-# Create placeholder for variant id, gets created while import
-df['variant_id'] = ['pgxvar-'] * len(df)
-
-# Create sets of ids for fast mapping
-sid = set(df['sample_id'])
-
-# Map sample_id and get biosample_id
-for i in sid:
-    # If there are more than one document, something is wrong
-    if bs.count_documents({"external_references.id": {'$regex': i},"biosample_status.id":"EFO:0009656"}) > 1:
-        print('More than one document found.')
-        
-    else:
-        hit = bs.find({"external_references.id": {'$regex': i},"biosample_status.id":"EFO:0009656"})
+    sample_id = df.loc[df['aliquot_id'] == aliquot, 'sample_id'].iloc[0]
+    if sample_id not in biosample_mapping:
+        hit = bs.find({"external_references.id": {'$regex': sample_id}, "biosample_status.id": "EFO:0009656"})
         for entry in hit:
-            df.loc[df['sample_id'] == i, 'biosample_id'] = entry['id']
-            df.loc[df['sample_id'] == i, 'individual_id'] = entry['individual_id']
+            biosample_mapping[sample_id] = (entry['id'], entry['individual_id'])
+            break
+    biosample_id, individual_id = biosample_mapping.get(sample_id, ('', ''))
+
+    df.loc[df['aliquot_id'] == aliquot, 'biosample_id'] = biosample_id
+    df.loc[df['aliquot_id'] == aliquot, 'individual_id'] = individual_id
 
 # alternate_bases_1 is the same as reference_bases
 df['alternate_bases'] = df['alternate_bases_2']
