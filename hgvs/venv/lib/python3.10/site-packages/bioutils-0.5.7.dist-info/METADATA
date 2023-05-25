@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: bioutils
+Version: 0.5.7
+Summary: miscellaneous simple bioinformatics utilities and lookup tables
+Home-page: https://github.com/biocommons/bioutils
+Author: bioutils committers
+Author-email: biocommons-dev@googlegroups.com
+Keywords: biocommons,bioinformatics,genomics,hgvs,variation
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst; charset=UTF-8
+License-File: LICENSE.txt
+Requires-Dist: attrs
+Requires-Dist: requests
+Provides-Extra: dev
+Requires-Dist: ipython (>=7.5) ; extra == 'dev'
+Requires-Dist: jupyter (>=1.0) ; extra == 'dev'
+Requires-Dist: restview ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: black ; extra == 'test'
+Requires-Dist: flake8 ; extra == 'test'
+Requires-Dist: isort ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pytest-optional-tests ; extra == 'test'
+Requires-Dist: tox ; extra == 'test'
+Requires-Dist: vcrpy ; extra == 'test'
+Requires-Dist: yapf ; extra == 'test'
+
+bioutils -- bioinformatics utilities and lookup tables
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+|pypi_badge| |build_status| |cov_badge| |cc_badge| |issues_badge| |contributors| |license| |changelog|
+
+
+bioutils provides some common utilities and lookup tables for bioinformatics.
+
+* bioutils.accessions -- parse accessions, infer namespaces 
+* bioutils.assemblies -- Human assembly information (from NCBI/GRCh)
+* bioutils.cytobands -- map cytobands to coordinates (from UCSC cytoband tables)
+* bioutils.digests -- implementations of various digests
+* bioutils.normalize -- allele normalization (left shuffle, right shuffle, expanded, vcf)
+  
+
+To use an E-Utilities API key run add it to an environment variable
+called `ncbi_api_key` and it will be used in the E-Utilities request.
+
+
+.. |build_status| image:: https://travis-ci.org/biocommons/bioutils.svg?branch=master
+  :target: https://travis-ci.org/biocommons/bioutils
+
+.. |changelog| image:: https://img.shields.io/badge/docs-changelog-green.svg
+   :target: https://bioutils.readthedocs.io
+
+.. |contributors| image:: https://img.shields.io/github/contributors/biocommons/bioutils.svg
+  :target: https://github.com/biocommons/bioutils
+
+.. |docs| image:: https://img.shields.io/badge/docs-readthedocs-green.svg
+   :target: http://bioutils.readthedocs.io/
+
+.. |issues_badge| image:: https://img.shields.io/github/issues/biocommons/bioutils.png
+  :target: https://github.com/biocommons/bioutils/issues
+
+.. |license| image:: https://img.shields.io/github/license/biocommons/bioutils.svg
+  :target: https://github.com/biocommons/bioutils/blob/master/LICENSE
+
+.. |pypi_badge| image:: https://img.shields.io/pypi/v/bioutils.svg
+  :target: https://pypi.org/project/bioutils/
+
+	   
+.. |cc_badge| image:: https://api.codeclimate.com/v1/badges/3a99e06ad0a842174b0a/maintainability
+   :target: https://codeclimate.com/github/biocommons/bioutils/maintainability
+   :alt: Maintainability
+
+.. |cov_badge| image:: https://coveralls.io/repos/github/biocommons/bioutils/badge.svg?branch=master
+   :target: https://coveralls.io/github/biocommons/bioutils?branch=master
+
