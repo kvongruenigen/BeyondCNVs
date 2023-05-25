@@ -48,6 +48,10 @@ df = df[['biosample_id', 'variant_id', 'callset_id', 'chromosome', 'start', 'end
         'reference_bases', 'alternate_bases', 'hgvsc', 'variant_classification', 'variant_type', 
         'hgvsp', 'hgvsp_short', 'aliquot_id', 'reference_id', 'case_id', 'sample_id']]
 
+variants_in_db = df.dropna(subset = ['biosample_id'])
+new = df[df['biosample_id'].isna()]
+
 # Write finished mapping file
 os.makedirs('temp/', exist_ok = True) # Check for the directory
-df.to_csv('temp/mappingfile.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
+variants_in_db.to_csv('/temp/varImport.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
+new.to_csv('/temp/varNew.tsv', sep = '\t', index = False)
