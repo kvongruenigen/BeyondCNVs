@@ -15,13 +15,34 @@ bs = db.biosamples
 # Read the data frame
 df = pd.read_csv("temp/mapfile.tsv", sep='\t', header=0, low_memory = False)
 
-
 # Create legacy ids / external references
 df['case_id'] = 'pgx:TCGA-' + df['case_id']
 df['sample_id'] = 'pgx:TCGA-' + df['sample_id']
 
 # Create placeholder for variant id, gets created while import
-df['variant_id'] = ['pgxvar-'] * len(df)
+df['variant_id'] = [''] * len(df) 
+
+# alternate_bases_1 is the same as reference_bases
+df['alternate_bases'] = df['alternate_bases_2']
+
+# Naming convention from pgx
+df['variant_state_id'] = ['SO:0001059'] * len(df)
+df['reference_name'] = df['chromosome'].str.slice(start=3)
+df['variant_types'] = df['variant_type']
+
+# Adding sequence ontologies - http://www.sequenceontology.org/browser/
+df.loc[df['variant_type'] == 'SNP', 'specific_so'] = 'SO:0001483'
+df.loc[df['variant_type'] == 'TNP', 'specific_so'] = 'SO:0002007'
+df.loc[df['variant_type'] == 'ONP', 'specific_so'] = 'SO:0002007'
+df.loc[df['variant_type'] == 'DEL', 'specific_so'] = 'SO:0000159'
+df.loc[df['variant_type'] == 'INS', 'specific_so'] = 'SO:0000667'
+
+# Convert 1-based MAF files to 0-based
+df.loc[df['variant_type'] == 'SNP', 'start'] -= 1
+df.loc[df['variant_type'] == 'TNP', 'start'] -= 1
+df.loc[df['variant_type'] == 'ONP', 'start'] -= 1
+df.loc[df['variant_type'] == 'DEL', 'start'] -= 1
+df.loc[df['variant_type'] == 'INS', 'end'] -= 1 # explanation at https://www.biostars.org/p/84686/
 
 # Generate callset_ids per aliquot for import and map sample_id to biosample_id
 biosample_mapping = {}
@@ -40,13 +61,11 @@ for aliquot in set(df['aliquot_id']):
     df.loc[df['aliquot_id'] == aliquot, 'biosample_id'] = biosample_id
     df.loc[df['aliquot_id'] == aliquot, 'individual_id'] = individual_id
 
-# alternate_bases_1 is the same as reference_bases
-df['alternate_bases'] = df['alternate_bases_2']
-
 # Clean up
-df = df[['biosample_id', 'variant_id', 'callset_id', 'chromosome', 'start', 'end', 'strand',
-        'reference_bases', 'alternate_bases', 'hgvsc', 'variant_classification', 'variant_type', 
-        'hgvsp', 'hgvsp_short', 'aliquot_id', 'reference_id', 'case_id', 'sample_id']]
+df = df[['biosample_id', 'variant_id', 'callset_id', 'reference_name', 'start', 'end',
+        'reference_bases', 'alternate_bases', 'hgvsc', 'variant_classification', 'variant_state_id', 
+        'hgvsp', 'hgvsp_short', 'aliquot_id', 'reference_id', 'case_id', 'sample_id', 'variant_types',
+        'specific_so']]
 
 variants_in_db = df.dropna(subset = ['biosample_id'])
 new = df[df['biosample_id'].isna()]
