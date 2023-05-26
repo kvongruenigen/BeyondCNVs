@@ -1,2 +1,0 @@
-variant_id	callset_id	biosample_id	individual_id	sequence_id	start	end	reference_bases	alternate_bases	annotation_derived
-pgxvar-snvtest	pgxcs-test2	pgxbs-test2	pgxind-test2	refseq:NC_000007.14	3488532	3488533	C	G	false
