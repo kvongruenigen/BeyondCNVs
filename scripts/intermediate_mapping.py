@@ -27,6 +27,8 @@ for file in os.listdir("data/"): # Iterate through directory
         intermediate_file = pd.concat([intermediate_file, df]) # write the relevant information to intermediate_file
 
 intermediate_file = intermediate_file.reset_index(drop=True) # Remove indexing column
+
+# Tumor Barcode shortening to get the sample barcode instead of the aliquot barcode
 intermediate_file['Tumor_Sample_Barcode'] = intermediate_file['Tumor_Sample_Barcode'].str.slice(stop=16) # Only keep the first 16 characters = sample barcode (instead of aliquot)
 os.makedirs('temp/', exist_ok=True) # Check for the directory
 intermediate_file.to_csv('temp/intermediate_mapping_file.csv', index = False)  # and create .csv file in the directory

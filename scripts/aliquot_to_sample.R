@@ -8,8 +8,6 @@ library(TCGAutils)
 df <- read_csv("temp/intermediate_mapping_file.csv")
 sample_barcodes <- unique(df['Tumor_Sample_Barcode'])
 
-# Tumor Barcode shorten
-
 # Create an empty list for the ids
 sample_ids <- list()
 
