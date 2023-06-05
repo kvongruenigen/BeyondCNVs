@@ -1,11 +1,14 @@
+rule targets:
+	input:
+		"data/maf_data.csv",
+		"temp/mapfile.tsv",
+		"data/varNew.tsv",
+		"data/varImport.tsv"
 
 # Download the MAF files
 rule maf_download: # 20 min
-	input: script = "scripts/gdc_maf_download.py"
-	shell:
-	"""
-	{ input.script }
-	"""
+	script:
+		"scripts/gdc_maf_download.py"
 
 # Unzip and move the files from the temp into the data folder
 rule unpack: # 1 min
@@ -14,13 +17,20 @@ rule unpack: # 1 min
 
 # Create an intermediate mapping file for conversion in R
 rule data_extraction: # 25 min
+	output:
+		"data/maf_data.csv"
+
 	script:
 		"scripts/data_extraction.py"
 
 # Match the barcodes of the aliquots to the sample ids
 rule mapfile: # 1 min
-	input: "data/maf_data.csv"
-	output: "temp/mapfile"
+	input: 
+		"data/maf_data.csv"
+
+	output: 
+		"temp/mapfile.tsv"
+
 	script:
 		"scripts/aliquot_to_sample.R"
 
@@ -28,13 +38,19 @@ rule mapfile: # 1 min
 # Remove the alternate bases that matches the references bases
 # Create callset and variant ids
 rule mapping: # 3h 5 min
+	input:
+		"temp/mapfile.tsv"
+
+	output:
+		"data/varImport.tsv",
+		"data/varNew.tsv"
+
 	script:
 		"scripts/mapping_finish.py"
 
 # Remove files in temp
 rule clean_up:
     input:
-        "temp/intermediate_mapping_file.csv",
         "temp/mapfile.tsv"
     shell:
-        "rm temp/intermediate_mapping_file.csv temp/mapfile.tsv"
+        "rm temp/mapfile.tsv && rm temp/*.maf"

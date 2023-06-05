@@ -62,15 +62,15 @@ for aliquot in set(df['aliquot_id']):
     df.loc[df['aliquot_id'] == aliquot, 'individual_id'] = individual_id
 
 # Clean up
-df = df[['biosample_id', 'variant_id', 'callset_id', 'reference_name', 'start', 'end',
+df = df[['biosample_id', 'variant_id', 'callset_id', 'individual_id', 'reference_name', 'start', 'end',
         'reference_bases', 'alternate_bases', 'hgvsc', 'variant_classification', 'variant_state_id', 
-        'hgvsp', 'hgvsp_short', 'aliquot_id', 'reference_id', 'case_id', 'sample_id', 'variant_types',
+        'hgvsp', 'hgvsp_short', 'aliquot_id', 'reference_id', 'sample_id', 'case_id', 'variant_types',
         'specific_so']]
 
-variants_in_db = df.dropna(subset = ['biosample_id'])
-new = df[df['biosample_id'].isna()]
+variants_in_db = df[df['biosample_id'] != '']
+new = df[df['biosample_id'] == '']
 
 # Write finished mapping file
 os.makedirs('temp/', exist_ok = True) # Check for the directory
-variants_in_db.to_csv('/temp/varImport.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
-new.to_csv('/temp/varNew.tsv', sep = '\t', index = False)
+variants_in_db.to_csv('temp/varImport.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
+new.to_csv('temp/varNew.tsv', sep = '\t', index = False)

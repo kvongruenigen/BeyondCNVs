@@ -78,6 +78,6 @@ variants_in_db = df.dropna(subset = ['biosample_id'])
 new = df[df['biosample_id'].isna()]
 
 # Write finished mapping file
-os.makedirs('temp/', exist_ok = True) # Check for the directory
-variants_in_db.to_csv('/temp/varImport.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
-new.to_csv('/temp/varNew.tsv', sep = '\t', index = False)
+os.makedirs('data/', exist_ok = True) # Check for the directory
+variants_in_db.to_csv('/data/varImport.tsv', sep = '\t', index = False)  # and create .tsv file in the directory
+new.to_csv('/data/varNew.tsv', sep = '\t', index = False)
