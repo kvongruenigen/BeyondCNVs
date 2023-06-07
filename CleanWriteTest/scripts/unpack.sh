@@ -29,3 +29,11 @@ for dir in */; do
     # Remove empty folder
     rmdir "$dir"
 done
+
+if [ ! -d "../data" ]; then
+    mkdir "../data"
+
+if [ ! -d "../data/maf_files" ]; then
+    mkdir "../data/maf_files"
+
+mv * ../data/maf_files

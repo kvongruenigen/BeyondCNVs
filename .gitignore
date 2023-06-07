@@ -3,3 +3,5 @@
 .DS_Store
 /data/.DS_Store
 .snakemake
+/CleanWriteTest/temp
+/CleanWriteTest/data

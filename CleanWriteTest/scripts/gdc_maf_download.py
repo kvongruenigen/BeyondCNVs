@@ -63,8 +63,24 @@ ls = []
 for i in range(0, len(file_uuid_list), 1000):
     ls.append(file_uuid_list[i:i + 1000])
 
+# Record of existing files
+existing_ids = []
+if os.path.isfile('temp/MANIFEST.txt'):
+    with open('temp/MANIFEST.txt') as f:
+        lines = f.readlines()
+    for i in lines[1:]:
+        existing_ids.append(i[0:36]) 
+
 # Download the files
+downloaded = 1
 for idls in ls:
+
+    # Exclude existing files
+    for ids in idls:
+        if ids in existing_ids:
+            idls.remove(ids)
+            print('Removed existing file id:', ids)
+    
     data_endpt = "https://api.gdc.cancer.gov/data"
 
     params = {"ids": idls}
@@ -77,9 +93,14 @@ for idls in ls:
 
     file_name = re.findall("filename=(.+)", response_head_cd)[0]
 
+     # Check for the directory
+    os.makedirs('temp/', exist_ok=True)
     save_path = 'temp/'
 
     completeName = os.path.join(save_path, file_name)
 
     with open(completeName, "wb") as output_file:
         output_file.write(response.content)
+
+    print('Downloaded completed. Remaining:', len(ls) - downloaded, 'of', len(ls))
+    downloaded += 1
