@@ -54,7 +54,7 @@ rule mapping: # 3h 5 min
 		"scripts/mapping_finish.py"
 
 # Remove files in temp
-rule clean_up:
+rule cleanup:
     input:
         "temp/mapfile.tsv"
     shell:
