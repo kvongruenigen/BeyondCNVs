@@ -2,7 +2,7 @@
 # This rule executes all the code except the Novel Data Download
 rule targets:
 	input:
-		"temp/maf_data.csv",
+		"data/maf_data.csv",
 		"temp/mapfile.tsv",
 		"data/varNew.tsv",
 		"data/varImport.tsv"
@@ -55,7 +55,5 @@ rule mapping: # 3h 5 min
 
 # Remove files in temp
 rule cleanup:
-    input:
-        "temp/mapfile.tsv"
     shell:
         "rm temp/*"

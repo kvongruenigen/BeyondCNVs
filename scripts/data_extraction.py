@@ -11,77 +11,48 @@
 # Module import
 import pandas as pd
 import os
+import shutil
 import glob
 from tqdm import tqdm
-
-# This is a list of combined identifiers and variant information
-# Documentation: 
-# https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/
-relevant_columns = ['Tumor_Sample_UUID', 'Matched_Norm_Sample_UUID',
-                    'case_id', 'Chromosome', 
-                    'Start_Position', 'End_Position',
-                    'Variant_Classification', 'Variant_Type',
-                    'Reference_Allele', 'Tumor_Seq_Allele2',
-                    'HGVSc', 'HGVSp', 'HGVSp_Short',
-                    'Tumor_Sample_Barcode', 'all_effects',
-                    'Transcript_ID', 'Gene', 'Feature',
-                    'Feature_type', 'HGNC_ID', 'ENSP',
-                    'RefSeq']
 
 # Create a dataframe for the data
 data = pd.DataFrame()
 
-# Assign columns from relevant list
-for info in relevant_columns:
-    data[info] = []
-
 # Iterate through directory with downloaded maf files and
-# load the relevant information in 'data'
+# load the relevant information in "data"
 
-print('Starting data extraction...')
+print("Starting data extraction...")
 
 df_list = []
 
-column_types = {
-    'Tumor_Sample_UUID': str,
-    'Matched_Norm_Sample_UUID': str,
-    'case_id': str,
-    'Chromosome': str, 
-    'Start_Position': int,
-    'End_Position': int,
-    'Variant_Classification':str,
-    'Variant_Type': str,
-    'Reference_Allele': str,
-    'Tumor_Seq_Allele2': str,
-    'HGVSc': str,
-    'HGVSp': str,
-    'HGVSp_Short': str,
-    'Tumor_Sample_Barcode': str,
-    'all_effects': str,
-    'Transcript_ID': str,
-    'Gene': str,
-    'Feature': str,
-    'Feature_type': str,
-    'HGNC_ID': str,
-    'ENSP': str,
-    'RefSeq': str
-
-}
-for file in tqdm(glob.glob("data/maf_files/*.maf"), desc = 'Extraction progress'): 
-    df = pd.read_csv("data/maf_files/"+ str(file), sep='\t',
-     skiprows=7, header=0, usecols=relevant_columns, low_memory = False, dtype=column_types)
+for file in tqdm(glob.glob("data/maf_files/*.maf"), desc = "Extraction progress"): 
+    df = pd.read_csv(file, sep = "\t", skiprows = 7, header = 0,
+        low_memory = False)
     df_list.append(df)
 
-data = pd.concat(df_list).reset_index(drop=True) # Remove indexing column
+if os.path.isfile("data/maf_data.csv"):
+    print("Found existing data. Comparing...")
+    existing_data = pd.read_csv("data/maf_data.csv", low_memory = False)
+    # Compare the existing data with the new data
+    existing_data_columns = existing_data.columns.tolist()
+    new_data_columns = df_list[0].columns.tolist()
+    # Adding only new rows
+    existing_data = pd.concat([existing_data, *df_list], ignore_index=True)
+    data = existing_data
 
+else:
+    # If the maf_data.csv file doesn't exist, create it with the new data
+    data = pd.concat(df_list).reset_index(drop=True)
+print("Data extraction completed.")
 # Tumor Barcode shortening to get the sample barcode instead of the
 # aliquot barcode (first 16 characters = sample barcode)
-data['Tumor_Sample_Barcode'] = data['Tumor_Sample_Barcode'].str.slice(stop=16)
+data["aliquot_barcode"] = data["Tumor_Sample_Barcode"]
+data["Tumor_Sample_Barcode"] = data["Tumor_Sample_Barcode"].str.slice(stop = 16)
 
  # Check for the directory
-os.makedirs('temp/', exist_ok=True)
-
+os.makedirs("data/", exist_ok = True)
+print("Writing output file...")
 # and create .csv file in the directory
-data.to_csv('temp/maf_data.csv', index = False)
-
-print('Data extraction completed.')
+data.to_csv("data/maf_data.csv", index = False)
+shutil.copy("data/maf_data.csv", "temp/maf_data.csv")
+print("Done")

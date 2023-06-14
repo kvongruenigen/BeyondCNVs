@@ -11,8 +11,18 @@ library(dplyr, warn.conflicts = FALSE)
 library(TCGAutils)
 
 cat("Converting aliquot UUID to sample UUID...\n")
+
 # Import data frame and extract barcodes
-data <- read_csv("temp/maf_data.csv", show_col_types = FALSE)
+columns_to_select <- c("Tumor_Sample_UUID", "Matched_Norm_Sample_UUID",
+                    "case_id", "Chromosome", 
+                    "Start_Position", "End_Position",
+                    "Variant_Classification", "Variant_Type",
+                    "Reference_Allele", "Tumor_Seq_Allele2",
+                    "Tumor_Sample_Barcode")
+
+data <- read_csv("data/maf_data.csv", show_col_types = FALSE)
+data %>% select(all_of(columns_to_select))
+
 sample_barcodes <- unique(data["Tumor_Sample_Barcode"])
 
 # Create an empty list for the ids
@@ -41,25 +51,18 @@ cat("Converting completed.\n")
 
 #####################################################################
 
-cat("Renaming...\n")
 # Rename the columns
-colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id",
-            "chromosome", "start", "end",
-            "variant_classification", "variant_type",
-            "reference_bases", "alternate_bases", "hgvsc", "hgvsp",
-            "hgvsp_short", "tumor_sample_barcode",
-            "all_effects", "transcript_id", "gene", "feature",
-            "feature_type", "hgnc_id", "ensp", "refseq", "sample_id")
-
+colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id", "chromosome",
+                       "start", "end", "variant_classification", "variant_type",
+                       "reference_bases", "alternate_bases", "sample_barcode",
+                       "sample_id")
 # Select important ones and rearrange
 mapfile <- mapfile %>% select(case_id, sample_id, aliquot_id,
   reference_id, chromosome, start, end, variant_classification,
-  variant_type, reference_bases, alternate_bases, hgvsc, hgvsp,
-  hgvsp_short, sample_id, all_effects,
-  transcript_id, gene, feature, feature_type, hgnc_id, ensp, refseq)
+  variant_type, reference_bases, alternate_bases)
 
 cat("Writing output file...\n")
 # Write file
-write_tsv(mapfile, 'temp/mapfile.tsv')
+write_tsv(mapfile, "temp/mapfile.tsv")
 
 cat("Done\n")
