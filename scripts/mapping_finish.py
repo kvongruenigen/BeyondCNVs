@@ -32,12 +32,13 @@ df["sample_id"] = "pgx:TCGA." + df["sample_id"]
 df["variant_id"] = [" "] * len(df)
 
 # Naming convention from progenetix
-df["variant_state_id"] = ["SO:0001059"] * len(df)
 df["variant_types"] = df["variant_type"]
 df["reference_name"] = df["chromosome"].str.slice(start=3)
 
 # Adding sequence ontologies - http://www.sequenceontology.org/browser/
+df["variant_state_id"] = ["SO:0001059"] * len(df)
 df.loc[df["variant_type"] == "SNP", "specific_so"] = "SO:0001483"
+df.loc[df["variant_type"] == "DNP", "specific_so"] = "SO:0002007"
 df.loc[df["variant_type"] == "TNP", "specific_so"] = "SO:0002007"
 df.loc[df["variant_type"] == "ONP", "specific_so"] = "SO:0002007"
 df.loc[df["variant_type"] == "DEL", "specific_so"] = "SO:0000159"
@@ -45,7 +46,7 @@ df.loc[df["variant_type"] == "INS", "specific_so"] = "SO:0000667"
 
 # Convert 1-based MAF files to 0-based
 # Explanation @ https://www.biostars.org/p/84686/
-df.loc[df["variant_type"].isin(["SNP", "TNP", "ONP", "DEL"]), "start"] -= 1
+df.loc[df["variant_type"].isin(["SNP", "DNP", "TNP", "ONP", "DEL"]), "start"] -= 1
 df.loc[df["variant_type"] == "INS", "end"] -= 1
 
 # Generate callset_ids per aliquot for import and map sample_id to biosample_id
