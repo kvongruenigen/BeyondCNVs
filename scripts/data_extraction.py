@@ -4,7 +4,7 @@
 #####################################################################
 
 # Data extraction from MAF files
-# (identifiers and variant information)
+# All information will be stored at data/maf_data.csv
 
 #####################################################################
 

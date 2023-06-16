@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-###############################################################################################################
+###############################################################################
 
+# Downloading masked somatic mutation files from the TCGA program of GDC
+# Results in the download of all unrestricted MAF files 
+
+###############################################################################
 import requests
 import json
 import re

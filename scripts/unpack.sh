@@ -1,5 +1,11 @@
 #!/bin/bash
-
+###############################################################################
+#
+# Unpacking the downloaded .tar.gz files
+# Deleting the empty directories
+# Moving all the files from /temp > /data/maf_files
+#
+###############################################################################
 # Move to directory with the downloaded data
 cd temp
 
