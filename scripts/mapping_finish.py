@@ -7,10 +7,12 @@
 
 #####################################################################
 
+import os
 import pandas as pd
 from bycon import *
 from pymongo import MongoClient
 from tqdm import tqdm
+import numpy as np
 
 # Connect to MongoDB
 client = MongoClient()
@@ -79,6 +81,7 @@ df = df[["biosample_id", "variant_id", "callset_id", "individual_id",
     "specific_so", "aliquot_id", "reference_id", "case_id",
     "sample_id", "variant_types"]]
 
+df = df.replace("", np.nan)
 variants_in_db = df.dropna(subset = ["biosample_id"])
 new = df[df["biosample_id"].isna()]
 

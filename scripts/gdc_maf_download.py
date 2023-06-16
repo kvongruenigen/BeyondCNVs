@@ -2,8 +2,6 @@
 # coding: utf-8
 
 ###############################################################################################################
-# Sometimes the server times out and the script gets stuck - implement break after certain time?
-# Mostly happens overnight.
 
 import requests
 import json

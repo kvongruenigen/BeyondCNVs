@@ -12,12 +12,12 @@ rule targets:
 ##
 
 # Download the MAF files
-rule maf_download: # 20 min
+rule maf_download:
 	script:
 		"scripts/gdc_maf_download.py"
 
 # Unzip and move the files from the temp into the data folder
-rule unpack: # 1 min
+rule unpack:
 	shell:
 		"bash scripts/unpack.sh"
 
@@ -25,15 +25,15 @@ rule unpack: # 1 min
 ## If MAF files available:
 ##
 
-# Create an intermediate mapping file for conversion in R
-rule data_extraction: # 25 min
+# Concatenate all the maf files into one CSV
+rule data_extraction:
 	output:
 		"temp/maf_data.csv"
 	script:
 		"scripts/data_extraction.py"
 
-# Match the barcodes of the aliquots to the sample ids
-rule mapfile: # 1 min
+# Convert the sample barcodes to the sample ids for mapping
+rule mapfile:
 	input: 
 		"temp/maf_data.csv"
 	output: 
@@ -41,10 +41,9 @@ rule mapfile: # 1 min
 	script:
 		"scripts/aliquot_to_sample.R"
 
-# Match the sample ids to the database to retrieve biosample_id
-# Remove the alternate bases that matches the references bases
+# Match the sample ids to the database to retrieve biosample ids and individual ids
 # Create callset and variant ids
-rule mapping: # 3h 5 min
+rule mapping:
 	input:
 		"temp/mapfile.tsv"
 	output:

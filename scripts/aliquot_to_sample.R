@@ -1,4 +1,3 @@
-
 #####################################################################
 
 # Turning barcodes into Sample UUIDs for mapping in progenetix
@@ -6,22 +5,19 @@
 #####################################################################
 
 # Load necessary libraries
-library(readr)
-library(dplyr, warn.conflicts = FALSE)
+suppressPackageStartupMessages(library(tidyverse))
 library(TCGAutils)
-
-cat("Converting aliquot UUID to sample UUID...\n")
 
 # Import data frame and extract barcodes
 columns_to_select <- c("Tumor_Sample_UUID", "Matched_Norm_Sample_UUID",
-                    "case_id", "Chromosome", 
-                    "Start_Position", "End_Position",
-                    "Variant_Classification", "Variant_Type",
-                    "Reference_Allele", "Tumor_Seq_Allele2",
-                    "Tumor_Sample_Barcode")
-
-data <- read_csv("data/maf_data.csv", show_col_types = FALSE)
-data %>% select(all_of(columns_to_select))
+                       "case_id", "Chromosome",
+                       "Start_Position", "End_Position",
+                       "Variant_Classification", "Variant_Type",
+                       "Reference_Allele", "Tumor_Seq_Allele2",
+                       "Tumor_Sample_Barcode")
+cat("Loading data...\n")
+data <- read_csv("data/maf_data.csv", col_select = all_of(columns_to_select),
+                 show_col_types = FALSE)
 
 sample_barcodes <- unique(data["Tumor_Sample_Barcode"])
 
@@ -29,6 +25,7 @@ sample_barcodes <- unique(data["Tumor_Sample_Barcode"])
 sample_ids <- list()
 
 # Convert barcodes into ids
+cat("Converting aliquot UUID to sample UUID...\n")
 for (id in sample_barcodes){
   sam <- barcodeToUUID(id)
   sam <- sam$sample_ids
@@ -58,8 +55,9 @@ colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id", "chromosome",
                        "sample_id")
 # Select important ones and rearrange
 mapfile <- mapfile %>% select(case_id, sample_id, aliquot_id,
-  reference_id, chromosome, start, end, variant_classification,
-  variant_type, reference_bases, alternate_bases)
+                              reference_id, chromosome, start, end,
+                              variant_classification, variant_type,
+                              reference_bases, alternate_bases)
 
 cat("Writing output file...\n")
 # Write file

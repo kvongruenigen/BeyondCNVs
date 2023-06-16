@@ -30,6 +30,9 @@ for file in tqdm(glob.glob("data/maf_files/*.maf"), desc = "Extraction progress"
         low_memory = False)
     df_list.append(df)
 
+# Checking if there is already data present 
+# - for the Snakemake workflow 
+# (temp can be cleared and the data stays, so the job can be initiated again)
 if os.path.isfile("data/maf_data.csv"):
     print("Found existing data. Comparing...")
     existing_data = pd.read_csv("data/maf_data.csv", low_memory = False)
