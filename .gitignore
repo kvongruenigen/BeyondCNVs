@@ -1,11 +1,10 @@
 /data
 /temp
-.DS_Store
 /data/.DS_Store
 /.snakemake
-/CleanWriteTest/temp
-/CleanWriteTest/data
+/dev
 /.idea
 /.ipynb_checkpoints
+.DS_Store
 .Rapp.history
 .Rhistory
