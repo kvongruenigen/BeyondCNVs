@@ -8,3 +8,12 @@
 .DS_Store
 .Rapp.history
 .Rhistory
+/.idea
+/.ipynb_checkpoints
+/.snakemake
+/data
+/dev
+/temp
+.DS_Store
+.Rapp.history
+.Rhistory
