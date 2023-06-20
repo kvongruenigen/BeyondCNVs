@@ -12,9 +12,7 @@
 /.ipynb_checkpoints
 /.snakemake
 /data
-/dev
 /temp
 .DS_Store
 .Rapp.history
 .Rhistory
-dev/Test scripts.ipynb
