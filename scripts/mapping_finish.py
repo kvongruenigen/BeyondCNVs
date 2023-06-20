@@ -32,7 +32,7 @@ df["sample_id"] = "pgx:TCGA." + df["sample_id"]
 df["variant_id"] = [" "] * len(df)
 
 # Naming convention from progenetix
-df["variant_types"] = df["variant_type"]
+df["snv_type"] = df["variant_type"]
 df["reference_name"] = df["chromosome"].str.slice(start=3)
 
 # Adding sequence ontologies - http://www.sequenceontology.org/browser/
@@ -80,7 +80,7 @@ df = df[["biosample_id", "variant_id", "callset_id", "individual_id",
     "reference_name", "start", "end", "reference_bases",
     "alternate_bases", "variant_classification", "variant_state_id",
     "specific_so", "aliquot_id", "reference_id", "case_id",
-    "sample_id", "variant_types"]]
+    "sample_id", "snv_type"]]
 
 df = df.replace("", np.nan)
 variants_in_db = df.dropna(subset = ["biosample_id"])
