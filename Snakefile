@@ -2,7 +2,7 @@
 # This rule executes all the code except the Novel Data Download
 rule targets:
 	input:
-		"data/maf_data.csv",
+		"temp/maf_data.csv",
 		"temp/mapfile.tsv",
 		"data/varNew.tsv",
 		"data/varImport.tsv"

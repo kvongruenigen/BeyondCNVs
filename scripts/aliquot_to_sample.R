@@ -16,7 +16,7 @@ columns_to_select <- c("Tumor_Sample_UUID", "Matched_Norm_Sample_UUID",
                        "Reference_Allele", "Tumor_Seq_Allele2",
                        "Tumor_Sample_Barcode")
 cat("Loading data...\n")
-data <- read_csv("data/maf_data.csv", col_select = all_of(columns_to_select),
+data <- read_csv("temp/maf_data.csv", col_select = all_of(columns_to_select),
                  show_col_types = FALSE)
 
 sample_barcodes <- unique(data["Tumor_Sample_Barcode"])
