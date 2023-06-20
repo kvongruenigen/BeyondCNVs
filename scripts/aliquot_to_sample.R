@@ -9,15 +9,8 @@ suppressPackageStartupMessages(library(tidyverse))
 library(TCGAutils)
 
 # Import data frame and extract barcodes
-columns_to_select <- c("Tumor_Sample_UUID", "Matched_Norm_Sample_UUID",
-                       "case_id", "Chromosome",
-                       "Start_Position", "End_Position",
-                       "Variant_Classification", "Variant_Type",
-                       "Reference_Allele", "Tumor_Seq_Allele2",
-                       "Tumor_Sample_Barcode")
 cat("Loading data...\n")
-data <- read_csv("temp/maf_data.csv", col_select = all_of(columns_to_select),
-                 show_col_types = FALSE)
+data <- read_csv("temp/maf_data.csv", show_col_types = FALSE)
 
 sample_barcodes <- unique(data["Tumor_Sample_Barcode"])
 
@@ -53,6 +46,7 @@ colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id", "chromosome",
                        "start", "end", "variant_classification", "variant_type",
                        "reference_bases", "alternate_bases", "sample_barcode",
                        "sample_id")
+
 # Select important ones and rearrange
 mapfile <- mapfile %>% select(case_id, sample_id, aliquot_id,
                               reference_id, chromosome, start, end,
