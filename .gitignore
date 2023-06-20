@@ -13,6 +13,7 @@
 /.snakemake
 /data
 /dev
+/dev/*
 /temp
 .DS_Store
 .Rapp.history
