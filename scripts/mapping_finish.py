@@ -34,6 +34,9 @@ df["variant_id"] = [" "] * len(df)
 # Naming convention from progenetix
 df["snv_type"] = df["variant_type"]
 df["reference_name"] = df["chromosome"].str.slice(start=3)
+df.loc[df["reference_bases"] == "-", "reference_bases"] = "."
+df.loc[df["alternative_bases"] == "-", "alternative_bases"] = "."
+
 
 # Adding sequence ontologies - http://www.sequenceontology.org/browser/
 df["variant_state_id"] = ["SO:0001059"] * len(df)
