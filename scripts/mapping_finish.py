@@ -35,7 +35,7 @@ df["variant_id"] = [" "] * len(df)
 df["snv_type"] = df["variant_type"]
 df["reference_name"] = df["chromosome"].str.slice(start=3)
 df.loc[df["reference_bases"] == "-", "reference_bases"] = "."
-df.loc[df["alternative_bases"] == "-", "alternative_bases"] = "."
+df.loc[df["alternate_bases"] == "-", "alternate_bases"] = "."
 
 
 # Adding sequence ontologies - http://www.sequenceontology.org/browser/
