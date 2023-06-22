@@ -45,7 +45,7 @@ cat("Converting completed.\n")
 colnames(mapfile) <- c("aliquot_id", "reference_id", "case_id", "chromosome",
                        "start", "end", "variant_classification", "variant_type",
                        "reference_bases", "alternate_bases", "sample_barcode",
-                       "sample_id")
+                       "aliquot_barcode", "sample_id")
 
 # Select important ones and rearrange
 mapfile <- mapfile %>% select(case_id, sample_id, aliquot_id,
