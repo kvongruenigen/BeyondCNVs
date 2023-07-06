@@ -111,9 +111,9 @@ for idls in ls:
     os.makedirs("temp/", exist_ok = True)
     save_path = "temp/"
 
-    completeName = os.path.join(save_path, file_name)
+    complete_name = os.path.join(save_path, file_name)
 
-    with open(completeName, "wb") as output_file:
+    with open(complete_name, "wb") as output_file:
         output_file.write(response.content)
 
     if len(ls) - downloaded != 0:
