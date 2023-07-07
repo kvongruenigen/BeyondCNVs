@@ -11,7 +11,6 @@
 # Module import
 import pandas as pd
 import os
-import shutil
 import glob
 from tqdm import tqdm
 
